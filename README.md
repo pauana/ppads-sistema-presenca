@@ -1,2 +1,2 @@
 # ppads-erp_loja
-ERP de Gerencimento de Loja
+Projeto de ERP de Gerencimento de Loja
