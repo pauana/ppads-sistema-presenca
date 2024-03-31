@@ -16,6 +16,12 @@ builder.Services.AddTransient<IDisciplinaRepository, DisciplinaRepository>();
 builder.Services.AddTransient<IMatriculaRepository, MatriculaRepository>();
 builder.Services.AddTransient<IProfessorRepository, ProfessorRepository>();
 builder.Services.AddTransient<IProfessorDisciplinaRepository, ProfessorDisciplinaRepository>();
+builder.Services.AddTransient<IResponsavelRepository, ResponsavelRepository>();
+builder.Services.AddTransient<IResponsavelAlunoRepository, ResponsavelAlunoRepository>();
+builder.Services.AddTransient<ISerieRepository, SerieRepository>();
+builder.Services.AddTransient<ITurmaRepository, TurmaRepository>();
+builder.Services.AddTransient<ITurmaProfessorRepository, TurmaProfessorRepository>();
+builder.Services.AddTransient<IRegistroPresencaRepository, RegistroPresencaRepository>();
 
 var app = builder.Build();
 

@@ -36,7 +36,7 @@ namespace PPADS_ERP_ESCOLAR.Infra
 
                 if (professor == null)
                 {
-                    throw new Exception($"Aluno não encontrado");
+                    throw new Exception($"Professor não encontrado");
                 }
 
                 return professor;

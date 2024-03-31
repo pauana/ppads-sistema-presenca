@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\PPADS_ERP_ESCOLAR.props" />
+</Project>

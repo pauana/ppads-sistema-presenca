@@ -38,7 +38,7 @@ public class ProfessorController : ControllerBase
     }
 
     [HttpGet]
-    [Route("user_por_id")]
+    [Route("user_por_id/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
     {

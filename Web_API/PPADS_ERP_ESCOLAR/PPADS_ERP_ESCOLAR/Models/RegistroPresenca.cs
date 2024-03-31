@@ -9,13 +9,13 @@ namespace PPADS_ERP_ESCOLAR.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idRegistroPresenca { get; set; }
-        public int idAluno { get; set; }
+        public int idMatricula { get; set; }
         public int idAula { get; set; }
         public string presenca { get; set; }
 
-        public RegistroPresenca(int idAluno, int idAula, string presenca) 
+        public RegistroPresenca(int idMatricula, int idAula, string presenca) 
         {
-            this.idAluno = idAluno;
+            this.idMatricula = idMatricula;
             this.idAula = idAula;
             this.presenca = presenca;
         }
