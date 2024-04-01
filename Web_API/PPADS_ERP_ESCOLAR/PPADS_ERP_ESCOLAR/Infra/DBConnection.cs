@@ -73,6 +73,9 @@ namespace PPADS_ERP_ESCOLAR.Infra
             modelBuilder.Entity<Turma>()
                 .Property(e => e.idTurma)
                 .ValueGeneratedOnAdd(); 
+            
+            modelBuilder.Entity<Turma>()
+                        .HasIndex(t => t.idSerie);
 
             modelBuilder.Entity<TurmaProfessor>()
                 .Property(e => e.idTurmaProfessor)

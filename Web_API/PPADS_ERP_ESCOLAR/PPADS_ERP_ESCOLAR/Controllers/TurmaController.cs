@@ -58,6 +58,26 @@ public class TurmaController : ControllerBase
         return Ok(turma);
     }
 
+    [HttpGet]
+    [Route("turma_por_serie/{idSerie}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Get(int idSerie)
+    {
+        if (idSerie == 0)
+        {
+            return BadRequest("idSerie Inválido!");
+        }
+
+        var turmas = _turmaRepository.Get(idSerie);
+
+        if (turmas.Count == 0)
+        {
+            return NotFound("Turmas não encontradas.");
+        }
+
+        return Ok(turmas);
+    }
+
     [HttpPut]
     [Route("{id}")]
     public IActionResult Update(int id, [FromBody] TurmaViewModel updatedTurma)

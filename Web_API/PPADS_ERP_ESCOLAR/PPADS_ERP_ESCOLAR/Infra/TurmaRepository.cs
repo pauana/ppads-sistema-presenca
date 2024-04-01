@@ -48,6 +48,13 @@ namespace PPADS_ERP_ESCOLAR.Infra
             }
         }
 
+        public List<Turma> Get(int idSerie) 
+        {
+            return _context.Turmas
+                      .Where(t => t.idSerie == idSerie)
+                      .ToList();
+        }
+
         public void Update(Turma turma)
         {
             _context.Update(turma);

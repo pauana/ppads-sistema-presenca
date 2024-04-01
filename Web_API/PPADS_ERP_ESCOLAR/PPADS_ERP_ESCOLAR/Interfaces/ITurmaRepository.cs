@@ -11,6 +11,7 @@ namespace PPADS_ERP_ESCOLAR.Interfaces
         List<Turma> Get();
 
         Turma GetById(int id);
+        List<Turma> Get(int idSerie);
 
         void Delete(Turma turma);
     }
