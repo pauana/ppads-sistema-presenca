@@ -11,10 +11,13 @@ namespace PPADS_ERP_ESCOLAR.Controllers;
 public class RegistroPresencaController : ControllerBase
 {
     private readonly IRegistroPresencaRepository _registroPresencaRepository;
+    private readonly IMatriculaRepository _matriculaRepository;
 
-    public RegistroPresencaController(IRegistroPresencaRepository registroPresencaRepository)
+    public RegistroPresencaController(IRegistroPresencaRepository registroPresencaRepository,
+                                     IMatriculaRepository matriculaRepository)
     {
         _registroPresencaRepository = registroPresencaRepository ?? throw new ArgumentNullException(nameof(registroPresencaRepository));
+        _matriculaRepository =  matriculaRepository ?? throw new ArgumentNullException(nameof(matriculaRepository));
     }
 
     [HttpPost]
@@ -57,6 +60,29 @@ public class RegistroPresencaController : ControllerBase
 
         return Ok(registroPresenca);
     }
+
+    [HttpGet]
+    [Route("registroPresenca_por_turma/{idTurma}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Get(int idTurma)
+    {
+        if (idTurma == 0)
+        {
+            return BadRequest("idTurma Inválido!");
+        }
+
+        var idMatriculas = _matriculaRepository.Get(idTurma);
+        var registrosPresenca = _registroPresencaRepository.Get(idMatriculas);
+
+        if (registrosPresenca == null)
+        {
+            return NotFound("Registros não encontrados.");
+        }
+
+        return Ok(registrosPresenca);
+    }
+
+
 
     [HttpPut]
     [Route("{id}")]

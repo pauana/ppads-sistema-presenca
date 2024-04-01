@@ -56,6 +56,14 @@ namespace PPADS_ERP_ESCOLAR.Infra
             return new List<Matricula>();
         }
 
+        public List<int> Get(int idTurma)
+        {
+            return _context.Matriculas
+                      .Where(m => m.idTurma == idTurma)
+                      .Select(m => m.idMatricula)
+                      .ToList();
+        }
+
         public void Update(Matricula matricula)
         {
             _context.Update(matricula);

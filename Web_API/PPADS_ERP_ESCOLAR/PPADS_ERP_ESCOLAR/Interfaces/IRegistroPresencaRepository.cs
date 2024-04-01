@@ -12,6 +12,8 @@ namespace PPADS_ERP_ESCOLAR.Interfaces
 
         RegistroPresenca GetById(int id);
 
+        List<RegistroPresenca> Get(List<int> idMatriculas);
+
         void Delete(RegistroPresenca registroPresenca);
     }
 }

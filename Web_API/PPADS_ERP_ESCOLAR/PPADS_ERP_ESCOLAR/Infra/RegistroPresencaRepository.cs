@@ -48,6 +48,13 @@ namespace PPADS_ERP_ESCOLAR.Infra
             }
         }
 
+        public List<RegistroPresenca> Get(List<int> idMatriculas)
+        {
+            return _context.RegistrosPresenca
+                      .Where(m => idMatriculas.Contains(m.idMatricula))
+                      .ToList();
+        }
+
         public void Update(RegistroPresenca registroPresenca)
         {
             _context.Update(registroPresenca);

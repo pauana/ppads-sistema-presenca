@@ -84,6 +84,9 @@ namespace PPADS_ERP_ESCOLAR.Infra
             modelBuilder.Entity<RegistroPresenca>()
                 .Property(e => e.idRegistroPresenca)
                 .ValueGeneratedOnAdd();  
+
+            modelBuilder.Entity<RegistroPresenca>()
+                        .HasIndex(r => r.idMatricula);
         }
     }
 }
