@@ -12,6 +12,8 @@ namespace PPADS_ERP_ESCOLAR.Interfaces
 
         Matricula GetById(int id);
 
+        List<Matricula> Get(char tipo, int id);
+
         void Delete(Matricula matricula);
     }
 }

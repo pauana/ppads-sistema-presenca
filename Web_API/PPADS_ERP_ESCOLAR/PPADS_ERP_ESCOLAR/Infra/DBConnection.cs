@@ -43,6 +43,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
             modelBuilder.Entity<Matricula>()
                 .Property(e => e.idMatricula)
                 .ValueGeneratedOnAdd();
+            
+            modelBuilder.Entity<Matricula>()
+                        .HasIndex(m => m.idSerie);
+
+            modelBuilder.Entity<Matricula>()
+                        .HasIndex(m => m.idTurma);
 
             modelBuilder.Entity<Professor>()
                 .Property(e => e.idProfessor)

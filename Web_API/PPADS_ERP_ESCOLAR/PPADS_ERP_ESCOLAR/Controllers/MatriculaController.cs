@@ -57,6 +57,26 @@ public class MatriculaController : ControllerBase
         return Ok(matricula);
     }
 
+    [HttpGet]
+    [Route("matricula_por_serieturma/{tipo}:{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Get(char tipo, int id)
+    {
+        if (id == 0)
+        {
+            return BadRequest("id Inválido!");
+        }
+
+        var matriculas = _matriculaRepository.Get(tipo, id);
+
+        if (matriculas.Count == 0)
+        {
+            return NotFound("Matrículas não encontradas.");
+        }
+
+        return Ok(matriculas);
+    }
+
     [HttpPut]
     [Route("{id}")]
     public IActionResult Update(int id, [FromBody] MatriculaViewModel updatedMatricula)

@@ -40,6 +40,22 @@ namespace PPADS_ERP_ESCOLAR.Infra
             }
         }
 
+        public List<Matricula> Get(char tipo, int id)
+        {
+            if (tipo == 'S')
+            {
+                return _context.Matriculas
+                      .Where(m => m.idSerie == id)
+                      .ToList();
+            } else if (tipo == 'T')
+            {
+                return _context.Matriculas
+                      .Where(m => m.idTurma == id)
+                      .ToList();
+            }
+            return new List<Matricula>();
+        }
+
         public void Update(Matricula matricula)
         {
             _context.Update(matricula);
