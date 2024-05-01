@@ -18,4 +18,5 @@ namespace PPADS_ERP_ESCOLAR.Models
             this.idProfessor = idProfessor;
         }
     }
+    
 }

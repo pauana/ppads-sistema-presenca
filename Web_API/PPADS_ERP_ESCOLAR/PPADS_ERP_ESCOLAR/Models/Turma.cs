@@ -22,4 +22,5 @@ namespace PPADS_ERP_ESCOLAR.Models
             this.classe = classe;
         }
     }
+    
 }
