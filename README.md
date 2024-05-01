@@ -22,7 +22,9 @@ Execute o programa WampServer (se estiver usando ele como servidor de MySQL)
 Abra o Git Bash em uma pasta que será clonado o repositório:
 
 • (Git Bash) `git clone https://github.com/pauana/ppads-sistema-presenca.git`
+
 • (Git Bash) `cd ppads-sistema-presenca/`
+
 • (Git Bash) `code .`
 
 Abrirá o projeto no VSCode 
