@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyCorsPolicy", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500", "http://127.0.0.1:5501")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -43,10 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
+app.UseCors("MyCorsPolicy");
 
 app.UseHttpsRedirection();
-
-app.UseCors("MyCorsPolicy");
 
 app.UseAuthorization();
 
