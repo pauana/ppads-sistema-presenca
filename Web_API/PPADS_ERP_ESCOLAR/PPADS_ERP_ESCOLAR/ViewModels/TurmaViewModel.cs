@@ -4,6 +4,7 @@ namespace PPADS_ERP_ESCOLAR.ViewModels
     {
         public int idSerie { get; set; }
         public int qtdAlunos { get; set; }
+        public string nome { get; set; }
         public string classe { get; set; }
     }
 }

@@ -22,7 +22,7 @@ public class TurmaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Add(TurmaViewModel turmaModel)
     {
-        var turma = new Turma(turmaModel.idSerie, turmaModel.qtdAlunos, turmaModel.classe);
+        var turma = new Turma(turmaModel.idSerie, turmaModel.qtdAlunos, turmaModel.nome,turmaModel.classe);
 
         _turmaRepository.Add(turma);
 
@@ -98,6 +98,7 @@ public class TurmaController : ControllerBase
 
             existingTurma.idSerie = updatedTurma.idSerie;
             existingTurma.qtdAlunos = updatedTurma.qtdAlunos;
+            existingTurma.nome = updatedTurma.nome;
             existingTurma.classe = updatedTurma.classe;
 
             _turmaRepository.Update(existingTurma);

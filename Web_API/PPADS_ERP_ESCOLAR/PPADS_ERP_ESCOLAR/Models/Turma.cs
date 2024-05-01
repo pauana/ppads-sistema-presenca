@@ -11,12 +11,14 @@ namespace PPADS_ERP_ESCOLAR.Models
         public int idTurma { get; set; }
         public int idSerie { get; set; }
         public int qtdAlunos { get; set; }
+        public string nome { get; set; }
         public string classe { get; set; }
 
-        public Turma (int idSerie, int qtdAlunos, string classe) 
+        public Turma (int idSerie, int qtdAlunos, string nome, string classe) 
         {
             this.idSerie = idSerie;
             this.qtdAlunos = qtdAlunos;
+            this.nome = nome;
             this.classe = classe;
         }
     }

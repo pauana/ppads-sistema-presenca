@@ -1,0 +1,10 @@
+.custom-purple {
+    background-color: #9969DB; /* Cor de fundo do botão */
+    color: #FFFFFF; /* Cor do texto */
+    border: none; /* Sem borda */
+}
+
+.custom-purple:hover, .custom-purple:focus {
+    background-color: #8757c5; /* Cor de fundo ao passar o mouse ou focar */
+    color: #FFFFFF; /* Cor do texto */
+}

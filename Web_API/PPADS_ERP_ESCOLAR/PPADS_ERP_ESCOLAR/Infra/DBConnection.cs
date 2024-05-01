@@ -9,8 +9,8 @@ namespace PPADS_ERP_ESCOLAR.Infra
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseMySql("server=;database=;user=;password=", ServerVersion.AutoDetect("MySQL")); ;
-            optionsBuilder.UseMySql("server=localhost;database=escolaoctogono;user=root", 
-                ServerVersion.AutoDetect("server=localhost;database=escolaoctogono;user=root"));
+            optionsBuilder.UseMySql("server=localhost;port=3308;database=escolaoctogono;user=root", 
+                ServerVersion.AutoDetect("server=localhost;port=3308;database=escolaoctogono;user=root"));
 
         }
 
