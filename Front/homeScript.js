@@ -1,31 +1,59 @@
 const API = 'http://localhost:5217/api/v1/';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const response = await fetch('http://localhost:5217/api/v1/verify-token', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        localStorage.removeItem('token');  // Remove o token inválido
+        window.location.href = 'login.html';
+    }
+
     var turmaSelect = document.getElementById('turmaSelect');
 
-    fetch(API + 'turma/lista')
-        .then(response => response.json())
-        .then(turmas => {
-            turmas.forEach(turma => {
-                var option = new Option(turma.nome, turma.idTurma);
-                turmaSelect.add(option);
-            });
-        })
-        .catch(error => console.error('Erro ao buscar turmas:', error));
+    fetch(API + 'turma/lista', {
+        headers: {
+            'Authorization': `Bearer ${token}`  // Incluir o token no cabeçalho
+        }
+    })
+    .then(response => response.json())
+    .then(turmas => {
+        turmas.forEach(turma => {
+            var option = new Option(turma.nome, turma.idTurma);
+            turmaSelect.add(option);
+        });
+    })
+    .catch(error => console.error('Erro ao buscar turmas:', error));
 });
 
 document.addEventListener('DOMContentLoaded', function() {
     var anoSelect = document.getElementById('anoSelect');
+    const token = localStorage.getItem('token');  // Obter o token do localStorage
 
-    fetch(API + 'serie/anosletivos')
-        .then(response => response.json())
-        .then(anos => {
-            anos.forEach(ano => {
-                var option = new Option(ano, ano);
-                anoSelect.add(option);
-            });
-        })
-        .catch(error => console.error('Erro ao buscar anos letivos:', error));
+    fetch(API + 'serie/anosletivos', {
+        headers: {
+            'Authorization': `Bearer ${token}`  // Incluir o token no cabeçalho
+        }
+    })
+    .then(response => response.json())
+    .then(anos => {
+        anos.forEach(ano => {
+            var option = new Option(ano, ano);
+            anoSelect.add(option);
+        });
+    })
+    .catch(error => console.error('Erro ao buscar anos letivos:', error));
 });
 
 document.getElementById('generate-report').addEventListener('click', generateReport);
@@ -53,6 +81,7 @@ function getReport(button){
     const periodo = document.getElementById('periodoSelect').value;
     const turma = document.getElementById('turmaSelect').value;
     const agrupar = document.getElementById('agrupaSelect').value;
+    const token = localStorage.getItem('token');  // Obter o token do localStorage
 
     const requestData = {
         dataini: dataIni ? new Date(dataIni) : null,
@@ -63,13 +92,14 @@ function getReport(button){
         agrupar: agrupar
     };
 
-    url = API + button;
+    const url = API + button;
 
     if (button == 'relatorio'){
-        fetch(url , {
+        fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`  // Incluir o token no cabeçalho
             },
             body: JSON.stringify(requestData)
         })
@@ -92,7 +122,8 @@ function getReport(button){
         fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`  // Incluir o token no cabeçalho
             },
             body: JSON.stringify(requestData)
         })

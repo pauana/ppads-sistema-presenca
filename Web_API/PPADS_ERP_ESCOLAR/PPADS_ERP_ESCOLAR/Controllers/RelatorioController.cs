@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PPADS_ERP_ESCOLAR.Infra;
@@ -10,6 +11,7 @@ using System.IO;
 
 namespace PPADS_ERP_ESCOLAR.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/v1")]
 public class DiretoController : ControllerBase

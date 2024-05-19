@@ -15,10 +15,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     });
 
     if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);  // Armazena o token no localStorage
         window.location.href = 'index.html';
     } else {
         const result = await response.json();
         alert(result.message);
     }
 });
-
