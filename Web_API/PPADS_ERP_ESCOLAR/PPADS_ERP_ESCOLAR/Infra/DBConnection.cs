@@ -8,7 +8,6 @@ namespace PPADS_ERP_ESCOLAR.Infra
         public DBConnection(DbContextOptions<DBConnection> options) : base(options)
         {
         }
-
         public DbSet <Aula> Aulas { get; set; }
         public DbSet <Aluno> Alunos { get; set; }
         public DbSet <Disciplina> Disciplinas { get; set; } 
@@ -21,9 +20,14 @@ namespace PPADS_ERP_ESCOLAR.Infra
         public DbSet <Turma> Turmas { get; set; }
         public DbSet <TurmaProfessor> TurmasProfessor { get; set; }
         public DbSet <RegistroPresenca> RegistrosPresenca { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Usuario>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Aula>()
                 .Property(e => e.idAula)
@@ -84,6 +88,7 @@ namespace PPADS_ERP_ESCOLAR.Infra
 
             modelBuilder.Entity<RegistroPresenca>()
                         .HasIndex(r => r.idMatricula);
+                        
         }
     }
 }
