@@ -3,6 +3,7 @@ using PPADS_ERP_ESCOLAR.Infra;
 using PPADS_ERP_ESCOLAR.Interfaces;
 using PPADS_ERP_ESCOLAR.Models;
 using PPADS_ERP_ESCOLAR.ViewModels;
+using System.Linq;
 
 namespace PPADS_ERP_ESCOLAR.Controllers;
 
@@ -11,10 +12,17 @@ namespace PPADS_ERP_ESCOLAR.Controllers;
 public class AulaController : ControllerBase
 {
     private readonly IAulaRepository _aulaRepository;
+    private readonly IMatriculaRepository _matricuilaRepository;
+    private readonly IRegistroPresencaRepository _registroPresencaRepository;
+    private readonly IAlunoRepository _alunoRepository;
+    private readonly DBConnection _context;
 
-    public AulaController(IAulaRepository aulaRepository)
+    public AulaController(IAulaRepository aulaRepository, IMatriculaRepository matriculaRepository, IRegistroPresencaRepository registroPresencaRepository, IAlunoRepository alunoRepository)
     {
         _aulaRepository = aulaRepository ?? throw new ArgumentNullException(nameof(aulaRepository));
+        _matricuilaRepository = matriculaRepository ?? throw new ArgumentNullException(nameof(matriculaRepository));
+        _registroPresencaRepository = registroPresencaRepository ?? throw new ArgumentNullException(nameof(registroPresencaRepository));
+        _alunoRepository = alunoRepository ?? throw new ArgumentNullException(nameof(alunoRepository));
     }
 
     [HttpPost]
@@ -72,6 +80,34 @@ public class AulaController : ControllerBase
             return StatusCode(500, $"Erro interno: {ex.Message}");
         }
     }
+
+    [HttpGet]
+    [Route("lista_alunos_com_registro_presenca")]
+    public IActionResult ListaDePresenca(int turmaId, int professorId, DateTime data, string periodo)
+    {
+        var query = from turma in _context.Turmas
+                    join matricula in _context.Matriculas on turma.idTurma equals matricula.idTurma
+                    join aluno in _context.Alunos on matricula.idAluno equals aluno.idAluno
+                    join aula in _context.Aulas on turma.idTurma equals aula.idTurma into aulasGroup
+                    from aula in aulasGroup.DefaultIfEmpty()
+                    join registro in _context.RegistrosPresenca on new { matricula.idMatricula, aula.idAula } equals new { registro.idMatricula, registro.idAula } into registrosGroup
+                    from registro in registrosGroup.DefaultIfEmpty()
+                    where turma.idTurma == turmaId
+                          && aula.idProfessor == professorId
+                          && aula.data == data
+                          && aula.periodo == periodo
+                    orderby matricula.chamada
+                    select new
+                    {
+                        IdMatricula = matricula.idMatricula,
+                        Aluno = $"{matricula.chamada} - {aluno.nome} ({aluno.ra})",
+                        Presenca = registro != null ? registro.presenca : null
+                    };
+
+        var result = query.ToList();
+
+        return Ok(result);
+    } 
 
     [HttpDelete]
     [Route("{id}")]
