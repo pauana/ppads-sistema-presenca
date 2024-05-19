@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PPADS_ERP_ESCOLAR.Infra;
 using PPADS_ERP_ESCOLAR.Interfaces;
+using PPADS_ERP_ESCOLAR.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +44,54 @@ builder.Services.AddTransient<ITurmaRepository, TurmaRepository>();
 builder.Services.AddTransient<ITurmaProfessorRepository, TurmaProfessorRepository>();
 builder.Services.AddTransient<IRegistroPresencaRepository, RegistroPresencaRepository>();
 
+// Configurar autenticação JWT
+var key = Encoding.ASCII.GetBytes("KnaWSTW9zyjB@G%4TUeSJasB$gASG3nLHsTWsAYd"); // Chave secreta para JWT
 
+builder.Services.AddSingleton(new TokenService("KnaWSTW9zyjB@G%4TUeSJasB$gASG3nLHsTWsAYd", "http://localhost:5217", "http://localhost:5217"));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "http://localhost:5217",
+        ValidAudience = "http://localhost:5217",
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme.",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement{
+    {
+        new Microsoft.OpenApi.Models.OpenApiSecurityScheme{
+            Reference = new Microsoft.OpenApi.Models.OpenApiReference{
+                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        new string[]{}
+    }});
+});
 
 var app = builder.Build();
 

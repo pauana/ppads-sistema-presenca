@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PPADS_ERP_ESCOLAR.Infra;
 using PPADS_ERP_ESCOLAR.Interfaces;
 using PPADS_ERP_ESCOLAR.Models;
-using PPADS_ERP_ESCOLAR.ViewModels;
+using PPADS_ERP_ESCOLAR.Services;
 
 namespace PPADS_ERP_ESCOLAR.Controllers
 {
@@ -12,11 +13,13 @@ namespace PPADS_ERP_ESCOLAR.Controllers
     {
         private readonly IAuthServiceRepository _authService;
         private readonly DBConnection _context;
+        private readonly TokenService _tokenService;
 
-        public AuthController(IAuthServiceRepository authService, DBConnection context)
+        public AuthController(IAuthServiceRepository authService, DBConnection context, TokenService tokenService)
         {
             _authService = authService;
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -24,7 +27,8 @@ namespace PPADS_ERP_ESCOLAR.Controllers
         {
             if (await _authService.ValidateUser(request.Username, request.Password))
             {
-                return Ok(new { message = "Logado com sucesso!" });
+                var token = _tokenService.GenerateToken(request.Username);
+                return Ok(new { token });
             }
             return Unauthorized(new { message = "Acesso negado! Verifique o usuário e a senha." });
         }
@@ -43,6 +47,12 @@ namespace PPADS_ERP_ESCOLAR.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Usuário registrado com sucesso!" });
+        }
+        [HttpGet("verify-token")]
+        [Authorize]
+        public IActionResult VerifyToken()
+        {
+            return Ok(new { message = "Token is valid." });
         }
     }
 
