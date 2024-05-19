@@ -16,16 +16,25 @@
     <link href="./assets/css/light-bootstrap-dashboard.css " rel="stylesheet" />
     <link href="./assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <link href="homeStyle.css" rel="stylesheet" />
+    <style>
+        .background-image {
+            background: url('./assets/img/magical-mystical-landscape-wallpaper-purple-tones.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.4; /* Define a transparência da imagem */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Mantém a imagem de fundo atrás de outros conteúdos */
+        }
+    </style>
 </head>
 
 <body>
+    <div class="background-image"></div> <!-- Div para a imagem de fundo -->
     <div class="wrapper">
         <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="javascript:;" class="simple-text">
@@ -54,7 +63,7 @@
                     <li class="nav-item active active-pro">
                         <a class="nav-link active" href="javascript:;">
                             <i class="pe-7s-user"></i>
-                            <p>Usuário</p>
+                            <p id="user-name">Usuário</p>
                         </a>
                     </li>
                 </ul>
@@ -62,7 +71,7 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500" style="opacity: 0.5;">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="login.html">
@@ -87,4 +96,5 @@
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
 <script src="./assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
 
+<script src="homeScript.js" type="text/javascript"></script>
 </html>

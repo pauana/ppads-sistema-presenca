@@ -25,10 +25,15 @@ namespace PPADS_ERP_ESCOLAR.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            if (await _authService.ValidateUser(request.Username, request.Password))
+            var user = await _authService.ValidateUser(request.Username, request.Password);
+            if (user != null)
             {
                 var token = _tokenService.GenerateToken(request.Username);
-                return Ok(new { token });
+                return Ok(new { 
+                                    token, 
+                                    username = user.Username, 
+                                    idProfessor = user.idProfessor 
+                                });
             }
             return Unauthorized(new { message = "Acesso negado! Verifique o usuário e a senha." });
         }

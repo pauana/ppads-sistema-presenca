@@ -13,14 +13,18 @@ namespace PPADS_ERP_ESCOLAR.Infra
             _context = context;
         }
 
-        public async Task<bool> ValidateUser(string username, string password)
+        public async Task<Usuario> ValidateUser(string username, string password)
         {
             var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Username == username);
             if (user == null)
             {
-                return false;
+                return null;
             }
-            return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            var ok = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            if (ok) {
+                return user;
+            }
+            return null;
         }
     }
 }
