@@ -14,4 +14,43 @@ namespace PPADS_ERP_ESCOLAR.Models
         [Required]
         public string Agrupar { get; set; } 
     }
+
+    public class TurmaItem
+    {
+        public string Turma { get; set; }
+        public string Aluno { get; set; }
+        public int Aulas { get; set; }
+        public int Faltas { get; set; }
+        public double Freq { get; set; }
+    }
+
+    public class ProfessorItem
+    {
+        public string Professor { get; set; }
+        public string Turma { get; set; }
+        public string Aluno { get; set; }
+        public int Aulas { get; set; }
+        public int Faltas { get; set; }
+        public double Freq { get; set; }
+    }
+
+    public class DisciplinaItem
+    {
+        public string Disciplina { get; set; }
+        public string Turma { get; set; }
+        public string Aluno { get; set; }
+        public int Aulas { get; set; }
+        public int Faltas { get; set; }
+        public double Freq { get; set; }
+    }
+
+    public class AlunoItem
+    {
+        public string Aluno { get; set; }
+        public string Disciplina { get; set; }
+        public string Professor { get; set; }
+        public int Aulas { get; set; }
+        public int Faltas { get; set; }
+        public double Freq { get; set; }
+    }
 }
