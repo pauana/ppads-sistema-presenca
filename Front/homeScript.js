@@ -29,8 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.getElementById('generate-report').addEventListener('click', generateReport);
+document.getElementById('export-report').addEventListener('click', exportReport);
 
 function generateReport() {
+    getReport('relatorio');
+}
+
+function exportReport(){
+    getReport('exportar');
+}
+
+function getReport(button){
     const form = document.getElementById('filter-form');
 
     if (!form.checkValidity()) {
@@ -54,28 +63,64 @@ function generateReport() {
         agrupar: agrupar
     };
 
-    fetch(API + 'relatorio', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Resposta recebida:', data);
-        if (data.length == 0){
-            const container = document.getElementById('report-container');
-            container.innerHTML = '';
+    url = API + button;
 
-            const msgContainer = document.createElement('h4');
-            msgContainer.innerHTML = 'Não existem informações';
-            container.appendChild(msgContainer);
-        } else{
-            criarTabela(data);
-        }
-    })
-    .catch(error => console.error('Erro ao enviar dados:', error));
+    if (button == 'relatorio'){
+        fetch(url , {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Resposta recebida:', data);
+            if (data.length == 0){
+                const container = document.getElementById('report-container');
+                container.innerHTML = '';
+    
+                const msgContainer = document.createElement('h4');
+                msgContainer.innerHTML = 'Não existem informações';
+                container.appendChild(msgContainer);
+            } else{
+                criarTabela(data);
+            }
+        })
+        .catch(error => console.error('Erro ao enviar dados:', error));
+    } else {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.blob())
+        .then(async blob => {
+            const options = {
+                suggestedName: 'Relatorio.xlsx',
+                types: [
+                    {
+                        description: 'Excel File',
+                        accept: {
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+                        }
+                    }
+                ]
+            };
+    
+            try {
+                const handle = await window.showSaveFilePicker(options);
+                const writable = await handle.createWritable();
+                await writable.write(blob);
+                await writable.close();
+            } catch (error) {
+                console.error('Erro ao salvar o arquivo:', error);
+            }
+        })
+        .catch(error => console.error('Erro ao exportar relatório:', error));
+    }
 }
 
 function criarTabela(dados) {

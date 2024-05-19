@@ -5,6 +5,8 @@ using PPADS_ERP_ESCOLAR.Models;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace PPADS_ERP_ESCOLAR.Controllers;
 
@@ -228,5 +230,123 @@ public class DiretoController : ControllerBase
         return json;
     }
 
+    [HttpPost("exportar")]
+    public IActionResult ExportarRelatorio([FromBody] Filtros filtros){
+        string json = Relatorio(filtros);
 
+        using var workbook = new XLWorkbook();
+        var worksheet = workbook.Worksheets.Add("Relatório");
+
+        // Adicionar cabeçalhos e ajustar estilo
+
+        if (filtros.Agrupar == "turma")
+        {
+            var data = JsonConvert.DeserializeObject<List<TurmaItem>>(json);
+            
+            var headers = new[] { "Turma", "Aluno", "Total de Aulas", "Total de Faltas", "Frequência" }; 
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(1, i + 1).Value = headers[i];
+                worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+            }
+
+            // Adicionar dados
+            if (data.Count > 0)
+            {
+                int row = 2;
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = item.Turma;
+                    worksheet.Cell(row, 2).Value = item.Aluno;
+                    worksheet.Cell(row, 3).Value = item.Aulas;
+                    worksheet.Cell(row, 4).Value = item.Faltas;
+                    worksheet.Cell(row, 5).Value = item.Freq;
+                    row++;
+                } 
+            } 
+        } else if (filtros.Agrupar == "professor")
+        {
+            var data = JsonConvert.DeserializeObject<List<ProfessorItem>>(json);
+
+            var headers = new[] { "Professor", "Turma", "Aluno", "Total de Aulas", "Total de Faltas", "Frequência" };
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(1, i + 1).Value = headers[i];
+                worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+            }
+
+            // Adicionar dados   
+            if (data.Count > 0)
+            {
+                int row = 2;
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = item.Professor;
+                    worksheet.Cell(row, 2).Value = item.Turma;
+                    worksheet.Cell(row, 3).Value = item.Aluno;
+                    worksheet.Cell(row, 4).Value = item.Aulas;
+                    worksheet.Cell(row, 5).Value = item.Faltas;
+                    worksheet.Cell(row, 6).Value = item.Freq;
+                    row++;
+                } 
+            } 
+        } else if (filtros.Agrupar == "disciplina")
+        {
+            var data = JsonConvert.DeserializeObject<List<DisciplinaItem>>(json);
+            var headers = new[] { "Disciplina", "Turma", "Aluno", "Total de Aulas", "Total de Faltas", "Frequência" }; 
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(1, i + 1).Value = headers[i];
+                worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+            }
+
+            // Adicionar dados   
+            if (data.Count > 0)
+            {
+                int row = 2;
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = item.Disciplina;
+                    worksheet.Cell(row, 2).Value = item.Turma;
+                    worksheet.Cell(row, 3).Value = item.Aluno;
+                    worksheet.Cell(row, 4).Value = item.Aulas;
+                    worksheet.Cell(row, 5).Value = item.Faltas;
+                    worksheet.Cell(row, 6).Value = item.Freq;
+                    row++;
+                } 
+            } 
+        } else if (filtros.Agrupar == "aluno")
+        {
+            var data = JsonConvert.DeserializeObject<List<AlunoItem>>(json);
+            var headers = new[] {"Aluno", "Disciplina", "Professor", "Total de Aulas", "Total de Faltas", "Frequência" };
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(1, i + 1).Value = headers[i];
+                worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+            }
+
+            // Adicionar dados   
+            if (data.Count > 0)
+            {
+                int row = 2;
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = item.Aluno;
+                    worksheet.Cell(row, 2).Value = item.Disciplina;
+                    worksheet.Cell(row, 3).Value = item.Professor;
+                    worksheet.Cell(row, 4).Value = item.Aulas;
+                    worksheet.Cell(row, 5).Value = item.Faltas;
+                    worksheet.Cell(row, 6).Value = item.Freq;
+                    row++;
+                } 
+            } 
+        }
+
+        worksheet.Columns().AdjustToContents();
+
+        using var stream = new MemoryStream();
+        workbook.SaveAs(stream);
+        var content = stream.ToArray();
+        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Relatorio.xlsx");
+    }
 }
