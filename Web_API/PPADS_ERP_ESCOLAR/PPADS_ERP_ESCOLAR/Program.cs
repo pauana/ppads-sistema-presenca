@@ -10,6 +10,10 @@ builder.Services.AddDbContext<DBConnection>(options =>
         new MySqlServerVersion(new Version(8, 0, 21)))); 
 
 builder.Services.AddControllers();
+
+// Adicionar o serviço de autenticação
+builder.Services.AddScoped<IAuthServiceRepository, AuthServiceRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
