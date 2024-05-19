@@ -4,8 +4,8 @@ using MimeKit.Text;
 using MimeKit;
 using PPADS_ERP_ESCOLAR.Interfaces;
 using PPADS_ERP_ESCOLAR.Models;
-using System.Net;
 using MailKit.Net.Smtp;
+using MySqlX.XDevAPI;
 
 namespace PPADS_ERP_ESCOLAR.Infra
 {
@@ -13,25 +13,35 @@ namespace PPADS_ERP_ESCOLAR.Infra
     {
         private readonly IConfiguration _config;
 
-        //public EmailServiceRepository(IConfiguration config)
-        //{
-        //    _config = config;
-        //}
+        public EmailServiceRepository(IConfiguration config)
+        {
+            _config = config;
+        }
 
         public void EnvioEmail(EmailDTO request)
         {
+            var emailSettings = _config.GetSection("EmailSettings");
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("ppads2024@outlook.com"));
+            email.From.Add(MailboxAddress.Parse(emailSettings["Email"]));
             email.To.Add(MailboxAddress.Parse(request.To));
             email.Subject = request.Subject;
             email.Body = new TextPart(TextFormat.Html) { Text = request.Body };
 
+            try
+            {
+
             using var smtp = new SmtpClient();
-            smtp.Connect("smtp.office365.com", 587, true);
-            smtp.Authenticate("´ppads2024@outlook.com", "PP@DS2024");
+            smtp.Connect(emailSettings["SmtpServer"], int.Parse(emailSettings["SmtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(emailSettings["Email"], emailSettings["Password"]);
             smtp.Send(email);
             smtp.Disconnect(true);
-            
+
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Erro ao enviar email.", ex);
+            }
+
         }
 
     }
