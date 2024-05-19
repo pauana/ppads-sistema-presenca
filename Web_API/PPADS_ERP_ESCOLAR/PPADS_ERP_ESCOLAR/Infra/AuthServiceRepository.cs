@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using PPADS_ERP_ESCOLAR.Interfaces;
 using PPADS_ERP_ESCOLAR.Models;
 

@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PPADS_ERP_ESCOLAR.Infra;
 using PPADS_ERP_ESCOLAR.Interfaces;
