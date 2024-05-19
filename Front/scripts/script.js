@@ -17,6 +17,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);  // Armazena o token no localStorage
+        localStorage.setItem('username', data.username);  // Armazena o nome do usuário
+        localStorage.setItem('idProfessor', data.idProfessor);  // Armazena o ID do professor
         window.location.href = 'index.html';
     } else {
         const result = await response.json();

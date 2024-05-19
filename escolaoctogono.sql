@@ -313,7 +313,7 @@ DELETE FROM `professor`;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
 INSERT INTO `professor` (`idProfessor`, `nome`, `ativo`) VALUES
 	(1, 'Paulo Ferreira', 'A'),
-	(2, 'Ana Beatriz SouzaAna Beatriz Souza', 'A'),
+	(2, 'Ana Beatriz Souza', 'A'),
 	(3, 'Carlos Eduardo Lima', 'A'),
 	(4, 'Marcela Gonçalves', 'A'),
 	(5, 'Roberto Carlos Silva', 'A'),
@@ -920,7 +920,7 @@ CREATE TABLE IF NOT EXISTS `serie` (
   `qtdeTurmas` int DEFAULT '0',
   `vagas` int DEFAULT '0',
   PRIMARY KEY (`idSerie`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela escolaoctogono.serie: 5 rows
 DELETE FROM `serie`;
@@ -930,7 +930,8 @@ INSERT INTO `serie` (`idSerie`, `ano`, `nomeSerie`, `qtdeTurmas`, `vagas`) VALUE
 	(2, 2024, '2º ANO', 1, 25),
 	(3, 2024, '3º ANO', 1, 25),
 	(4, 2024, '4º ANO', 1, 25),
-	(5, 2024, '5º ANO', 1, 25);
+	(5, 2024, '5º ANO', 1, 25),
+	(7, 2023, '5º ANO', 0, 0);
 /*!40000 ALTER TABLE `serie` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela escolaoctogono.turma
@@ -986,6 +987,29 @@ INSERT INTO `turma_professor` (`idTurmaProfessor`, `idTurma`, `idProfessor`) VAL
 	(14, 4, 3),
 	(15, 5, 3);
 /*!40000 ALTER TABLE `turma_professor` ENABLE KEYS */;
+
+-- Copiando estrutura para tabela escolaoctogono.usuario
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(50) NOT NULL,
+  `PasswordHash` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `idProfessor` int DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+
+-- Copiando dados para a tabela escolaoctogono.usuario: 8 rows
+DELETE FROM `usuario`;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` (`Id`, `Username`, `PasswordHash`, `idProfessor`) VALUES
+	(1, 'ADMIN', '$2a$11$.O6yKAX8JwAEvbGNvwp70eCnpnl4U6Fj8NYC.WDYgZh6McTKl.BQC', 0),
+	(2, 'PAULO.FERREIRA', '$2a$11$aO9ecW5OXB2VZWuMyohUP.0xpPEqlTJwuSEo.Wgk6DSxZx.C2vEcm', 1),
+	(3, 'ANA.SOUZA', '$2a$11$nGAzvY/Y32Ks1MMJe0K5hOT0icr6rXthBsFcrBHJQo7Q8PatDgRw2', 2),
+	(4, 'CARLOS.LIMA', '$2a$11$WM7OnqpqihJaEB9AdyllhOjmGU7RHz.KKqqMJ9PcOSRf4RI96WJYW', 3),
+	(5, 'MARCELA.GONÇALVES', '$2a$11$xdDwAp/st0zDgAz0oghfQOHqsbiHs9YXdoHHPN6OsnC.Dh2ZCaJD2', 4),
+	(6, 'ROBERTO.SILVA', '$2a$11$5P3INZ4Crwf8c.fGOnJ4/Os67nL5vEXDaXce.j9oR4MCz20.NweUW', 5),
+	(7, 'JULIANA.MORAES', '$2a$11$G3QL7UJdnGAmsq40weI2SO5cXvwi7uwesV6H0ty8PKfi41vobSSGy', 6),
+	(8, 'THIAGO.PEREIRA', '$2a$11$NdWceoV6sppXHyk/Rjk9eOYKB012R9S.dUNTuS9YNVjPoq6CK7F7C', 7);
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -1,7 +1,9 @@
-﻿namespace PPADS_ERP_ESCOLAR.Interfaces
+﻿using PPADS_ERP_ESCOLAR.Models;
+
+namespace PPADS_ERP_ESCOLAR.Interfaces
 {
     public interface IAuthServiceRepository
     {
-        Task<bool> ValidateUser(string username, string password);
+        Task<Usuario> ValidateUser(string username, string password);
     }
 }

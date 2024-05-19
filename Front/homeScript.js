@@ -1,6 +1,11 @@
 const API = 'http://localhost:5217/api/v1/';
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('user-name').textContent = username;
+    }
+
     const token = localStorage.getItem('token');
 
     if (!token) {
