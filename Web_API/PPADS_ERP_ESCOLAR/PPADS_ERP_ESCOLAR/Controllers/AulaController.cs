@@ -17,12 +17,13 @@ public class AulaController : ControllerBase
     private readonly IAlunoRepository _alunoRepository;
     private readonly DBConnection _context;
 
-    public AulaController(IAulaRepository aulaRepository, IMatriculaRepository matriculaRepository, IRegistroPresencaRepository registroPresencaRepository, IAlunoRepository alunoRepository)
+    public AulaController(IAulaRepository aulaRepository, IMatriculaRepository matriculaRepository, IRegistroPresencaRepository registroPresencaRepository, IAlunoRepository alunoRepository, DBConnection context)
     {
         _aulaRepository = aulaRepository ?? throw new ArgumentNullException(nameof(aulaRepository));
         _matricuilaRepository = matriculaRepository ?? throw new ArgumentNullException(nameof(matriculaRepository));
         _registroPresencaRepository = registroPresencaRepository ?? throw new ArgumentNullException(nameof(registroPresencaRepository));
         _alunoRepository = alunoRepository ?? throw new ArgumentNullException(nameof(alunoRepository));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     [HttpPost]
@@ -86,23 +87,21 @@ public class AulaController : ControllerBase
     public IActionResult ListaDePresenca(int turmaId, int professorId, DateTime data, string periodo)
     {
         var query = from turma in _context.Turmas
-                    join matricula in _context.Matriculas on turma.idTurma equals matricula.idTurma
-                    join aluno in _context.Alunos on matricula.idAluno equals aluno.idAluno
-                    join aula in _context.Aulas on turma.idTurma equals aula.idTurma into aulasGroup
-                    from aula in aulasGroup.DefaultIfEmpty()
-                    join registro in _context.RegistrosPresenca on new { matricula.idMatricula, aula.idAula } equals new { registro.idMatricula, registro.idAula } into registrosGroup
-                    from registro in registrosGroup.DefaultIfEmpty()
-                    where turma.idTurma == turmaId
-                          && aula.idProfessor == professorId
-                          && aula.data == data
-                          && aula.periodo == periodo
-                    orderby matricula.chamada
-                    select new
-                    {
-                        IdMatricula = matricula.idMatricula,
-                        Aluno = $"{matricula.chamada} - {aluno.nome} ({aluno.ra})",
-                        Presenca = registro != null ? registro.presenca : null
-                    };
+                join matricula in _context.Matriculas on turma.idTurma equals matricula.idTurma
+                join aluno in _context.Alunos on matricula.idAluno equals aluno.idAluno
+                join aula in _context.Aulas
+                    .Where(a => a.data == data && a.idProfessor == professorId) on turma.idTurma equals aula.idTurma into aulasGroup
+                from aula in aulasGroup.DefaultIfEmpty()
+                join registro in _context.RegistrosPresenca on new { MatriculaId = matricula.idMatricula, AulaId = (int?)aula.idAula } equals new { MatriculaId = registro.idMatricula, AulaId = (int?)registro.idAula } into registrosGroup
+                from registro in registrosGroup.DefaultIfEmpty()
+                where turma.idTurma == turmaId
+                orderby matricula.chamada
+                select new
+                {
+                    IdMatricula = matricula.idMatricula,
+                    Aluno = $"{matricula.chamada} - {aluno.nome} ({aluno.ra})",
+                    Presenca = registro != null ? registro.presenca : null
+                };
 
         var result = query.ToList();
 
