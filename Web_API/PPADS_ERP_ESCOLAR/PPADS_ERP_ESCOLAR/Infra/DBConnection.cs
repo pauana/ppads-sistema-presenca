@@ -5,13 +5,8 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class DBConnection : DbContext
     {
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DBConnection(DbContextOptions<DBConnection> options) : base(options)
         {
-            //optionsBuilder.UseMySql("server=;database=;user=;password=", ServerVersion.AutoDetect("MySQL")); ;
-            optionsBuilder.UseMySql("server=localhost;database=escolaoctogono;user=root", 
-                ServerVersion.AutoDetect("server=localhost;database=escolaoctogono;user=root"));
-
         }
 
         public DbSet <Aula> Aulas { get; set; }
@@ -28,6 +23,8 @@ namespace PPADS_ERP_ESCOLAR.Infra
         public DbSet <RegistroPresenca> RegistrosPresenca { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Aula>()
                 .Property(e => e.idAula)
                 .ValueGeneratedOnAdd();

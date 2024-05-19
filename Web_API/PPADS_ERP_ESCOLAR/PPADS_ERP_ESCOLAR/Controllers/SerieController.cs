@@ -11,11 +11,13 @@ namespace PPADS_ERP_ESCOLAR.Controllers;
 public class SerieController : ControllerBase
 {
     private readonly ISerieRepository _serieRepository;
+    private readonly DBConnection _context;
 
-    public SerieController(ISerieRepository serieRepository)
-    {
-        _serieRepository = serieRepository ?? throw new ArgumentNullException(nameof(serieRepository));
-    }
+    public SerieController(ISerieRepository serieRepository, DBConnection context)
+        {
+            _serieRepository = serieRepository ?? throw new ArgumentNullException(nameof(serieRepository));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
     [HttpPost]
     [Route("criar")]
@@ -56,6 +58,20 @@ public class SerieController : ControllerBase
         }
 
         return Ok(serie);
+    }
+
+    [HttpGet]
+    [Route("anosletivos")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetAnos(){
+        {
+        var anosDistintos = _context.Series
+            .Select(serie => serie.ano)
+            .Distinct()
+            .ToList();
+
+        return Ok(anosDistintos); // Retorna os anos distintos como JSON
+    }
     }
 
     [HttpPut]

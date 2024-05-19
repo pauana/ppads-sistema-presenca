@@ -71,6 +71,68 @@
                     </li>
                 </ul>
             </nav>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="filter-form" class="form-inline">
+                                <div>
+                                    <div class="form-group mx-sm-1 mb-2">
+                                        <label for="diaIniInput" >Data Início: </label>
+                                        <input type="date" class="form-control mx-sm-1" id="diaIniInput" placeholder="Dia">
+                                    </div>
+                                    <div class="form-group mx-sm-1 mb-2">
+                                        <label for="diaFimInput" > Data Fim: </label>
+                                        <input type="date" class="form-control mx-sm-3" id="diaFimInput" placeholder="Dia">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group mb-2">
+                                        <label for="anoSelect">Ano Letivo: </label>
+                                        <select class="form-control mx-sm-1" id="anoSelect" required>
+                                            <option value="" disabled selected>Ano Letivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label for="periodoSelect">Período:</label>
+                                        <select class="form-control mx-sm-4" id="periodoSelect">
+                                            <option value="" selected>Período de Aula</option>
+                                            <option value="manha">Manhã</option>
+                                            <option value="tarde">Tarde</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group mb-2">
+                                        <label for="turmaSelect">Turma:</label>
+                                        <select class="form-control mx-sm-3" id="turmaSelect">
+                                            <option value="" selected>Turma</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label for="agrupaSelect">Agrupar:</label>
+                                        <select class="form-control mx-sm-1" id="agrupaSelect" required>
+                                            <option value="" disabled selected>Agrupar por</option>
+                                            <option value="turma" >Turma</option>
+                                            <option value="professor" >Professor</option>
+                                            <option value="disciplina" >Disciplina</option>
+                                            <option value="aluno" >Aluno</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="button"  id="generate-report" class="btn mb-2 ml-3 custom-purple">Gerar relatório</button>
+                                    <button type="button" class="btn mb-2 ml-3 custom-purple">Exportar</button>
+                                </div>
+                            </form>
+                            <div id="report-container" class="mt-3">
+                                <!-- A tabela será inserida aqui -->
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
 </body>
 <!--   Core JS Files   -->
 <script src="./assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
@@ -86,5 +148,7 @@
 <script src="./assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
 <script src="./assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+<script src="homeScript.js" type="text/javascript"></script>
 
 </html>

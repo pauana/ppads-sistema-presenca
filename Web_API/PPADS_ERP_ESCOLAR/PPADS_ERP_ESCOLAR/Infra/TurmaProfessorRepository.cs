@@ -7,7 +7,11 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class TurmaProfessorRepository : ITurmaProfessorRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+        public TurmaProfessorRepository(DBConnection context)
+        {
+            _context = context;
+        }
         public void Add(TurmaProfessor turmaProfessor)
         {
             _context.Add(turmaProfessor);

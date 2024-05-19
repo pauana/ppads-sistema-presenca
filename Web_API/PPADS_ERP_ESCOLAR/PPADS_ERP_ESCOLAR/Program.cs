@@ -1,9 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using PPADS_ERP_ESCOLAR.Infra;
 using PPADS_ERP_ESCOLAR.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DBConnection>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        new MySqlServerVersion(new Version(8, 0, 21)))); 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

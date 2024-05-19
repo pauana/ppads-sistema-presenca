@@ -5,7 +5,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class DisciplinaRepository : IDisciplinaRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+
+        public DisciplinaRepository(DBConnection context)
+        {
+            _context = context;
+        }
 
         public void Add(Disciplina disciplina)
         {
