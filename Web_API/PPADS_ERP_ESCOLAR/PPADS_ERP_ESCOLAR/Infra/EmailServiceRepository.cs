@@ -1,28 +1,38 @@
 ﻿
+using MailKit.Security;
+using MimeKit.Text;
+using MimeKit;
 using PPADS_ERP_ESCOLAR.Interfaces;
+using PPADS_ERP_ESCOLAR.Models;
 using System.Net;
-using System.Net.Mail;
+using MailKit.Net.Smtp;
 
 namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class EmailServiceRepository : IEmailServiceRepository
     {
-        public Task EnvioEmailAsync(string email, string assunto, string mensagem)
+        private readonly IConfiguration _config;
+
+        //public EmailServiceRepository(IConfiguration config)
+        //{
+        //    _config = config;
+        //}
+
+        public void EnvioEmail(EmailDTO request)
         {
-            //endereço de email do sender
-            var mail = "ppads2024@outlook.com";
-            //senha do mesmo email
-            var password = "PP@DS2024";
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("ppads2024@outlook.com"));
+            email.To.Add(MailboxAddress.Parse(request.To));
+            email.Subject = request.Subject;
+            email.Body = new TextPart(TextFormat.Html) { Text = request.Body };
 
-            var client = new SmtpClient("smtp-mail.outlook.com", 587)
-            {
-                EnableSsl = true,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(mail, password)
-            };
-
-            return client.SendMailAsync(new MailMessage(from: mail, to: email, assunto, mensagem));
-
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.office365.com", 587, true);
+            smtp.Authenticate("´ppads2024@outlook.com", "PP@DS2024");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+            
         }
+
     }
 }

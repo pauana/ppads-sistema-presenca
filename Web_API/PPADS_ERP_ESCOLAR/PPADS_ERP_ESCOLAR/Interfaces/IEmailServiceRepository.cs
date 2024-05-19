@@ -1,7 +1,9 @@
-﻿namespace PPADS_ERP_ESCOLAR.Interfaces
+﻿using PPADS_ERP_ESCOLAR.Models;
+
+namespace PPADS_ERP_ESCOLAR.Interfaces
 {
     public interface IEmailServiceRepository
     {
-        Task EnvioEmailAsync(string email, string assunto, string mensagem);
+        public void EnvioEmail(EmailDTO request);
     }
 }
