@@ -8,3 +8,28 @@
     background-color: #8757c5; /* Cor de fundo ao passar o mouse ou focar */
     color: #FFFFFF; /* Cor do texto */
 }
+
+.turma-container {
+    margin-bottom: 15px;
+}
+
+.turma-header {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.turma-body.hidden {
+    display: none;
+}
+
+.expand-button {
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.expand-button:focus {
+    outline: none;
+}

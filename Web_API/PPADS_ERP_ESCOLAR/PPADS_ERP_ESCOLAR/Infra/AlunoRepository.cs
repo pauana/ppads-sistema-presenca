@@ -5,7 +5,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class AlunoRepository : IAlunoRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+
+         public AlunoRepository(DBConnection context)
+        {
+             _context = context;
+        }
 
         public void Add(Aluno aluno)
         {

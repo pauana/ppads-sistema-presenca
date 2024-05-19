@@ -5,7 +5,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class RegistroPresencaRepository : IRegistroPresencaRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+
+        public RegistroPresencaRepository(DBConnection context)
+        {
+            _context = context;
+        }
         public void Add(RegistroPresenca registroPresenca)
         {
             _context.Add(registroPresenca);

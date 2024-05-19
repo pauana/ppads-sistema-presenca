@@ -5,7 +5,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class MatriculaRepository : IMatriculaRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+
+        public MatriculaRepository(DBConnection context)
+        {
+            _context = context;
+        }
         public void Add(Matricula matricula)
         {
             _context.Add(matricula);

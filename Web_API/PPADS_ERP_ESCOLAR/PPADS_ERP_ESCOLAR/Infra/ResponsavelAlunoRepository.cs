@@ -7,7 +7,12 @@ namespace PPADS_ERP_ESCOLAR.Infra
 {
     public class ResponsavelAlunoRepository : IResponsavelAlunoRepository
     {
-        private readonly DBConnection _context = new DBConnection();
+        private readonly DBConnection _context;
+
+        public ResponsavelAlunoRepository(DBConnection context)
+        {
+            _context = context;
+        }
         public void Add(ResponsavelAluno responsavelAluno)
         {
             _context.Add(responsavelAluno);
