@@ -43,6 +43,7 @@ builder.Services.AddTransient<ISerieRepository, SerieRepository>();
 builder.Services.AddTransient<ITurmaRepository, TurmaRepository>();
 builder.Services.AddTransient<ITurmaProfessorRepository, TurmaProfessorRepository>();
 builder.Services.AddTransient<IRegistroPresencaRepository, RegistroPresencaRepository>();
+builder.Services.AddTransient<IEmailServiceRepository, EmailServiceRepository>();
 
 // Configurar autenticação JWT
 var key = Encoding.ASCII.GetBytes("KnaWSTW9zyjB@G%4TUeSJasB$gASG3nLHsTWsAYd"); // Chave secreta para JWT
