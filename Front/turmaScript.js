@@ -82,15 +82,25 @@ document.getElementById('registrar_aula').addEventListener('click', async functi
         });
 
         const alunos = await response.json();
-        renderizarListaDeAlunos(alunos);
-        // Verificar se existe algum registro de presença para decidir qual botão exibir
-        const existeRegistroPresenca = alunos.some(aluno => aluno.idRegistroPresenca !== null);
-        if (existeRegistroPresenca) {
-            document.getElementById('atualizar_presenca').style.display = 'inline-block';
-            document.getElementById('salvar_presenca').style.display = 'none';
+        if (alunos.length > 0){
+            renderizarListaDeAlunos(alunos);
+            // Verificar se existe algum registro de presença para decidir qual botão exibir
+            const existeRegistroPresenca = alunos.some(aluno => aluno.idRegistroPresenca !== null);
+            if (existeRegistroPresenca) {
+                document.getElementById('atualizar_presenca').style.display = 'inline-block';
+                document.getElementById('salvar_presenca').style.display = 'none';
+            } else {
+                document.getElementById('salvar_presenca').style.display = 'inline-block';
+                document.getElementById('atualizar_presenca').style.display = 'none';
+            }
         } else {
-            document.getElementById('salvar_presenca').style.display = 'inline-block';
-            document.getElementById('atualizar_presenca').style.display = 'none';
+            const container = document.getElementById('lista-alunos-container');
+            container.innerHTML = ''; // Limpar conteúdo existente
+
+            const msg = document.createElement('h4');
+            msg.innerHTML = 'Não existem alunos matriculados na Turma selecionada';
+
+            container.appendChild(msg);
         }
     } catch (error) {
         alert(`Professor(a) ${localStorage.getItem('username')} não leciona na Turma selecionada`);
