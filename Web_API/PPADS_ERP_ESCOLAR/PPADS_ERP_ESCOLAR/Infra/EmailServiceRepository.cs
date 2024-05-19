@@ -29,12 +29,13 @@ namespace PPADS_ERP_ESCOLAR.Infra
 
             try
             {
+                using var smtp = new SmtpClient();
 
-            using var smtp = new SmtpClient();
-            smtp.Connect(emailSettings["SmtpServer"], int.Parse(emailSettings["SmtpPort"]), SecureSocketOptions.StartTls);
-            smtp.Authenticate(emailSettings["Email"], emailSettings["Password"]);
-            smtp.Send(email);
-            smtp.Disconnect(true);
+                smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                smtp.Connect(emailSettings["SmtpServer"], int.Parse(emailSettings["SmtpPort"]), SecureSocketOptions.StartTls);
+                smtp.Authenticate(emailSettings["Email"], emailSettings["Password"]);
+                smtp.Send(email);
+                smtp.Disconnect(true);
 
             }
             catch (Exception ex)
