@@ -1,29 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using NETCore.MailKit.Core;
-using PPADS_ERP_ESCOLAR.Infra;
-using PPADS_ERP_ESCOLAR.Interfaces;
-using System.Runtime.CompilerServices;
+﻿using System.Net;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Mvc;
 
-namespace PPADS_ERP_ESCOLAR.Controllers;
-
-[ApiController]
-[Route("api/v1/email")]
-public class EmailController : ControllerBase
+namespace PPADS_ERP_ESCOLAR.Controllers
 {
-
-    private readonly IEmailServiceRepository _emailService;
-
-    public EmailController(IEmailServiceRepository emailService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmailController : ControllerBase
     {
-        _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-    }
+        [HttpPost("send")]
+        public IActionResult EnviarEmail(string email, string assunto, string mensagem)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient("smtp.office365.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("ppads2024@outlook.com", "PP@DS2024"),
+                    EnableSsl = true,
+                };
 
-    [HttpPost]
-    [Route("email")]
-    public async Task<IActionResult> EnviarEmail(string email, string assunto, string mensagem)
-    {
-        await _emailService.EnvioEmailAsync(email, assunto, mensagem);
-        return Ok();
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("ppads2024@outlook.com"),
+                    Subject = assunto,
+                    Body = mensagem,
+                    IsBodyHtml = true,
+                };
+
+                mailMessage.To.Add(email);
+
+                smtpClient.Send(mailMessage);
+
+                return Ok(new { message = "Email enviado com sucesso!" });
+            }
+            catch (SmtpException ex)
+            {
+                return StatusCode(500, new { message = "Erro ao enviar o email.", details = ex.Message });
+            }
+        }
     }
 }
