@@ -1,4 +1,4 @@
-const API = 'http://localhost:5217/api/v1/';
+const API = 'https://ppads-canudoproximo.azurewebsites.net/api/v1/';
 
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault();

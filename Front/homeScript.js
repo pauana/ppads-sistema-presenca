@@ -1,4 +1,4 @@
-const API = 'http://localhost:5217/api/v1/';
+const API = 'https://ppads-canudoproximo.azurewebsites.net/api/v1/';
 
 document.addEventListener('DOMContentLoaded', async function() {
     const username = localStorage.getItem('username');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         return;
     }
 
-    const response = await fetch('http://localhost:5217/api/v1/verify-token', {
+    const response = await fetch('https://ppads-canudoproximo.azurewebsites.net/api/v1/verify-token', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
